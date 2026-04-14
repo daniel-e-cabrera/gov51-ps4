@@ -1,0 +1,7 @@
+"0","lwage_educ_scatter <- ggplot(card, aes(x = educ, y = lwage)) +"
+"0","  geom_point(alpha = 0.5) +"
+"0","  geom_smooth(method = ""lm"", se = FALSE, color = ""tomato"") +"
+"0","  labs(title = ""Log Weekly Wage vs Years of Completed Education"","
+"0","       x = ""Years of Completed Education"","
+"0","       y = ""Log Weekly Wage"")"
+"0","print(lwage_educ_scatter)"
