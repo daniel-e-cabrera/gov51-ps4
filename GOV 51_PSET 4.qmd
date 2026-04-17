@@ -39,7 +39,7 @@ educ_hist <- ggplot(card, aes(x = educ)) +
        y = "Frequency (Number of Individuals)")
 
 print(educ_hist)
-
+ggsave("output/educ_hist.png", width = 10, height = 6)
 # mean of educ
 mean_educ <- mean(card$educ)
 print(mean_educ)
@@ -59,6 +59,7 @@ lwage_educ_scatter <- ggplot(card, aes(x = educ, y = lwage)) +
        x = "Years of Completed Education",
        y = "Log Weekly Wage")
 print(lwage_educ_scatter)
+ggsave("output/lwage_educ_scatter.png", width = 10, height = 6)
 ```
 
 Based on this plot, there is a positive linear relationship between years of completed education and log weekly wage. In other words, as one gains more years of education, their wages are likely to be higher according to this scatter plot. Specifically, here we are seeing positive correlation and not causation.
