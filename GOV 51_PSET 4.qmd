@@ -25,24 +25,28 @@ num_observations <- nrow(card)
 print(num_observations)
 ```
 
-There are 3,010 observations in our Card (1995) data. Each observation represents one unique individual.
+There are 3,010 observations in our Card (1995) dataset. Each observation represents one unique man.
 
 **1.3**
 
 ```{r}
-#histogram for years of completed education variable
+# histogram for years of completed education variable
 educ_hist <- ggplot(card, aes(x = educ)) +
   geom_histogram(binwidth = 1, fill = "skyblue", color = "white") +
-  labs(title = "Histogram of Years of Completed Education", x = "Years of Completed Education", y = "Frequency (Number of Individuals)")
+  geom_vline(aes(xintercept = mean(educ)), color = "black", size = 0.5) +
+  labs(title = "Histogram of Years of Completed Education",
+       x = "Years of Completed Education",
+       y = "Frequency (Number of Individuals)")
+
 print(educ_hist)
 
-#mean of educ
+# mean of educ
 mean_educ <- mean(card$educ)
 print(mean_educ)
 
 ```
 
-The mean for years of completed education (educ) is 13.26346 years. There is a noticeable spike around 12 years (about 1,000 individuals) and then a much smaller spike around 16 years (a little less than 500 individuals). The spike at 12 years is understandable considering 12 years is the end of high school, where a large proportion of individuals choose to join the workforce instead of pursuing additional education like an undergraduate degree. The smaller spike at 16 years can be understood as those who finish their undergraduate degree in 4 years and choose to stop their education there instead of pursuing even further education.
+The mean for years of completed education (educ) is 13.26346 years. There is a noticeable spike around 12 years (about 1,000 individuals) and then a much smaller spike around 16 years (a little less than 500 individuals). The spike at 12 years is understandable considering 12 years is the end of high school, where a large proportion of individuals choose to join the workforce instead of pursuing additional education like an undergraduate degree. The smaller spike at 16 years can be understood as those who finish their undergraduate degree in 4 years and choose to stop their education there instead of pursuing even further education, like a masters or a PHD.
 
 **1.4**
 
@@ -57,11 +61,11 @@ lwage_educ_scatter <- ggplot(card, aes(x = educ, y = lwage)) +
 print(lwage_educ_scatter)
 ```
 
-Based on this plot, there is a positive linear relationship between years of completed education and log weekly wage. In other words, as one gains more years of education, their wages are likely to be higher according to this scatter plot.
+Based on this plot, there is a positive linear relationship between years of completed education and log weekly wage. In other words, as one gains more years of education, their wages are likely to be higher according to this scatter plot. Specifically, here we are seeing positive correlation and not causation.
 
 **1.5**
 
-People with more education may earn more even if education itself has no causal effect because of confounding factors. First, individuals who complete more years of education often come from more affluent families. These families may be able to invest more in their children’s education and also provide advantages in the labor market, such as better networks, internships, or job referrals. As a result, higher earnings may partly reflect family background rather than education itself. Second, selection into higher levels of education is not random. Individuals who pursue and complete more education may differ systematically in characteristics such as race, gender, or other social advantages. If these characteristics are themselves associated with higher wages due to labor market inequalities, then education will appear positively related to earnings even if it is not the true cause.
+People with more education may earn more even if education itself has no causal effect because of confounding factors. First, individuals who complete more years of education often come from more affluent families. These families may be able to invest more in their children’s education and also provide advantages in the labor market, such as better networks, internships, or job referrals. As a result, higher earnings may partly reflect family background rather than education itself. Second, individuals who obtain more education may be more hard-working or motivated, traits that also make them more productive and likely to earn higher wages even independent of their education level.
 
 **2.1**
 
@@ -89,7 +93,11 @@ data = card, se_type = "HC2")
 summary(first_stage)$coefficients["nearc4", ]
 ```
 
-The coefficient for nearc4 (equal to 1 if the respondent grew up near a 4-year college) is 0.3271114. It's standard error is 0.080554 and it's t-statistic is 4.060749. A coefficient of 0.3271114 on nearc4 means that, holding other factors (black race, lived in metropolitan area, lived in the South, potential labor market experience in years, experienced squared, and married status) constant, individuals who grew up near a 4-year college have about 0.3271114 more years of education on average than those who did not. Overall, this positive relationship between growing up near a 4-year college and years of completed education makes sense because growing up near a 4-year college lowers the costs and barriers to attending, making individuals more likely to obtain more education.
+The coefficient for nearc4 (equal to 1 if the respondent grew up near a 4-year college) is 0.3271114. It's standard error is 0.080554 and it's t-statistic is 4.060749.
+
+A coefficient of 0.3271114 on nearc4 means that, holding other factors (black race, lived in metropolitan area, lived in the South, potential labor market experience in years, experienced squared, and married status) constant, individuals who grew up near a 4-year college have about 0.3271114 more years of education on average than those who did not.
+
+Overall, this positive relationship between growing up near a 4-year college and years of completed education makes sense because growing up near a 4-year college lowers the costs and barriers to attending, making individuals more likely to obtain more education. In other words, proximity to a 4-year college increases the liklihood of attending college.
 
 **2.3**
 
@@ -98,13 +106,13 @@ The coefficient for nearc4 (equal to 1 if the respondent grew up near a 4-year c
 4.060749^2
 ```
 
-The t-statistic for nearc4 (equal to 1 if the respondent grew up near a 4-year college) is 4.060749. The first-stage F-statistic is then 16.48968. With an F-statistic over 10, we likely have a strong instrument. Instrument strength matters for the reliability of the 2SLS estimate because weak instruments are only weakly correlated with the endogenous variable, which leads to imprecise estimates and can bias the results toward the OLS estimate. In other words, a stronger instrument is equal to more credibility.
+The t-statistic for nearc4 (equal to 1 if the respondent grew up near a 4-year college) is 4.060749. The first-stage F-statistic is then 16.48968. With an F-statistic over 10, we have a strong instrument. Instrument strength matters for the reliability of the 2SLS estimate because weak instruments are only weakly correlated with the endogenous variable, which leads to imprecise estimates and can bias the results toward the OLS estimate. In other words, a stronger instrument is equal to more credibility. The larger the F the smaller the bias of 2SLS.
 
 **2.4**
 
-a\) Formally, the exclusion restriction requires that, conditional on education (and other controls), nearc4, has no direct effect on lwage. In other words, once we control for education, growing up near a 4-year college should affect wages only through its effect on education, not through any other channel.
+a\) Formally, the exclusion restriction requires that once we control for education (and other exogenous controls), nearc4 has no direct effect on lwage. That is, nearc4 should not affect wages through any channel other than education. Additionally, the formal exclusion restriction states that the covariance between the instrument (nearc4) and the error term of the lwage term is zero.
 
-b\) One way the exclusion restriction might be violated is if growing up near a college exposes individuals to better local labor markets or professional networks, which can increase their wages directly, even if they do not obtain more education.
+b\) One way the exclusion restriction might be violated is if growing up near a college exposes individuals to better local labor markets or professional networks, which can increase their wages directly, even if they do not obtain more education. For example, someone who grows up near a university like MIT may have access to nearby companies such biotech firms in the Cambridge/Boston area, allowing them to secure higher-paying jobs through local connections or opportunities, even without additional schooling.
 
 **2.5**
 
@@ -119,7 +127,7 @@ print(balance_check)
 
 ```
 
-The groups are not exactly balanced. There is a difference of about 7% mean black individuals (black), a difference of about 35% in lived in metropolitan are (smsa), and a difference of about 24% in lived in the South (south). This imbalance tells me that the instrument is not randomly assigned and is correlated with observable characteristics, suggesting that individuals who grew up near a college differ systematically from those who did not.
+The groups are not exactly balanced. There is a difference of about 7% mean black individuals (black), a difference of about 35% in lived in metropolitan area (smsa), and a difference of about 24% in lived in the South (south). This imbalance tells me that the instrument is not as-good-as-randomly-assigned, suggesting that individuals who grew up near a 4-year college differ (on pre-treatment characteristics) from those who did not. Therefore, we need to control for these characteristics later in regression.
 
 **3.1**
 
@@ -144,9 +152,11 @@ reduced_form / first_form
 
 ```
 
+0.1248932
+
 **3.3**
 
-Our Wald estimator of 0.1248932 tells us for individuals whose education is influenced by proximity to a 4-year college, one additional year of education increases wages by approximately 12.5%.
+Our Wald estimator of 0.1248932 tells us that for men whose education is influenced by proximity to a 4-year college, one additional year of education increases wages by approximately 12.5%.
 
 **4.1**
 
@@ -175,6 +185,7 @@ The coefficient of educ (years of completed education) is 0.1248932. This is the
 **4.3**
 
 ```{r}
+#OLS and 2SLS estimates in a single regression table
 modelsummary(list("OLS" = ols, "2SLS" = iv),
 coef_map = c("educ" = "Years of Education"),
 gof_map = c("nobs", "r.squared"))
@@ -184,40 +195,50 @@ gof_map = c("nobs", "r.squared"))
 
 a\) 2SLS (0.125) is larger than OLS (0.071).
 
-b\)
+b\) One reason OLS might underestimate the return to education is measurement error in educ. If education is measured with error, for example, people misreport their schooling, this creates attenuation bias and pushes the OLS estimate toward zero. Another reason is that the instrument variable estimate captures the return for compilers or in this case, people whose education increases because they lived near a college, and these individuals may have higher returns to education than average, making the 2SLS estimate larger than OLS.
 
-c\)
+c\) The 2SLS estimate is more credible as a causal estimate. This is because OLS is likely driven by bias due to issues like measurement error and omitted variables (ability bias), whereas 2SLS uses nearc4 as an instrument to isolate variation in education that is plausibly exogenous. As long as the instrument is valid, in other words, relevant, independent, and satisfies the exclusion restriction, the 2SLS estimate better captures the causal effect of education on wages.
 
 **4.5**
 
 a\)
 
 ```{r}
+#OLS of lwage on educ and the controls + IQ
 ols_iq <- lm_robust(lwage ~ educ + IQ + black + smsa + south + exper + expersq + married,
 data = card, se_type = "HC2")
 summary(ols_iq)$coefficients["educ", ]
 ```
 
-OLS of lwage on educ, IQ, and all other controls gives us a coefficient of 0.06756868 versus our coefficient for educ with OLS without IQ taken into account is is 0.07149827. The difference between these two coefficients is 0.00392959. In other words, adding IQ shrinks the coefficient of lwage on educ by very little.
-
-```{r}
-0.07149827 - 0.06756868
-```
+OLS of lwage on educ, IQ, and all other controls, gives us a coefficient of 0.06756868 versus our coefficient for educ with OLS without IQ taken into account is 0.07149827. The difference between these two coefficients is 0.00392959. In other words, adding IQ shrinks the coefficient of lwage on educ by very little.
 
 b\)
 
 ```{r}
+#2SLS regression using iv_robust() from estimatr + IQ
 two_sls_iq <- iv_robust(lwage ~ educ + IQ + black + smsa + south + exper + expersq + married |
-nearc4 + black + smsa + south + exper + expersq + married,
+nearc4 + black + IQ + smsa + south + exper + expersq + married,
 data = card, se_type = "HC2")
 
 summary(two_sls_iq)$coefficients["educ", ]
 ```
 
-c\)
+The 2SLS coefficient does not change significantly. Our 2SLS coefficient without IQ is 0.1248932. Our coefficient with IQ taken into account is 0.10938993. Our coefficient with IQ controlled is 0.01550327 smaller than our coefficient without IQ taken into account.
+
+```{r}
+0.1248932-0.10938993
+```
+
+c\) When comparing (a) and (b), this suggests that IQ is not the main source of the discrepancy between OLS and IV. Adding IQ only slightly reduces both the OLS and 2SLS estimates, and the gap between them remains fairly large. This means that controlling for IQ does not eliminate the difference, so the discrepancy is likely driven by other factors, such as measurement error in education or differences in returns for compilers (LATE), rather than omitted IQ bias alone.
 
 **5.1**
 
+The compilers in this context are individuals whose decision to obtain more education was influenced by living near a 4-year college. More specifically, these are people who would not have pursued as much education if they had not grown up near a college, but who did obtain more education because proximity made attending easier or cheaper; for example, avoiding moving costs or having better access. They are typically individuals on the margin of attending college, or, in other words, those for whom small changes in access or cost make a difference in their schooling decisions. For example, these individuals are perhaps first-generation, low-income students who face financial or informational barriers that make college attendance sensitive to changes in proximity and access. Compilers do not include never-takers or always-takers, or in other words individuals who never were going to attend college (D = 0) and were always going to attend college regardless of proximity to a 4-year college (D - 1).
+
 **5.2**
 
+The 2SLS coefficient measures the causal effect of an additional year of education on wages for individuals whose educational attainment increased because they grew up near a 4-year college (the compilers), where this effect is identified using variation in education choices induced by proximity to a 4-year college (nearc4).
+
 **5.3**
+
+No, this LATE is unlikely to be the same as the ATE. The 2SLS estimate applies to compilers, or men whose education increased because they lived near a college, and these individuals are likely on the margin of attending college. Because their decision to get more education depends on access or cost, they may have higher marginal returns to education than the average person (for whom schooling decisions are less sensitive to proximity to a 4-year college). In particular, these individuals may not have attended college otherwise, so the additional education they receive due to proximity leads to a relatively large increase in their wages. As a result, the instrument variable estimate can be larger than the ATE and not representative of the return for the typical individual in the sample.
