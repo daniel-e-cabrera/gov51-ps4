@@ -1,7 +1,7 @@
+"0","#number of observations"
 "0","num_observations <- nrow(card)"
 "0","print(num_observations)"
 "1","[1]"
 "1"," 3010"
 "1","
 "
-"0","View(card)"

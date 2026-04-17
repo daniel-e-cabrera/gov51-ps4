@@ -1,5 +1,0 @@
-"0","#histogram for years of completed education variable"
-"0","educ_hist <- ggplot(card, aes(x = educ)) +"
-"0","  geom_histogram(binwidth = 1, fill = ""skyblue"", color = ""white"") +"
-"0","  labs(title = ""Histogram of Years of Completed Education"", x = ""Years of Completed Education"", y = ""Frequency (Number of Individuals)"")"
-"0","print(educ_hist)"

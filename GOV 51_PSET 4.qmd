@@ -15,7 +15,6 @@ library(tidyverse)
 library(estimatr)
 library(modelsummary)
 card <- read_csv("data/raw/card1995.csv")
-View(card)
 ```
 
 **1.2**
@@ -199,6 +198,12 @@ data = card, se_type = "HC2")
 summary(ols_iq)$coefficients["educ", ]
 ```
 
+OLS of lwage on educ, IQ, and all other controls gives us a coefficient of 0.06756868 versus our coefficient for educ with OLS without IQ taken into account is is 0.07149827. The difference between these two coefficients is 0.00392959. In other words, adding IQ shrinks the coefficient of lwage on educ by very little.
+
+```{r}
+0.07149827 - 0.06756868
+```
+
 b\)
 
 ```{r}
@@ -210,3 +215,9 @@ summary(two_sls_iq)$coefficients["educ", ]
 ```
 
 c\)
+
+**5.1**
+
+**5.2**
+
+**5.3**

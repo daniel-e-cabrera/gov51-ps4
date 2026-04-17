@@ -1,7 +1,0 @@
-"0","#mean of educ"
-"0","mean_educ <- mean(card$educ)"
-"0","print(mean_educ)"
-"1","[1]"
-"1"," 13.26346"
-"1","
-"
